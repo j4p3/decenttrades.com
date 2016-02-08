@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DECENT TRADES DOT COM!!!</title>
+  <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+    body { font-family: 'Lora', serif; background-image: url('http://www.decenttrades.com/assets/subtle_white_feathers.png'); background-repeat: 'repeat';}
+    .title { font-size: 36px; }
+    .attribution { font-style: italic; font-size: 24px; padding-left: 100px; }
+    .content { height: 100%; width: 80%; margin: 100px auto; }
+  </style>
+</head>
+<body>
+  <div class="content"></div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+  var contentUrl = 'http://www.decenttrades.com/assets/lottery/',
+
+      library = [
+        {
+          type: 'quote',
+          location: 'aurelius-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'aurelius-2.json'
+        },
+        {
+          type: 'quote',
+          location: 'aurelius-3.json'
+        },
+        {
+          type: 'quote',
+          location: 'aurelius-4.json'
+        },
+        {
+          type: 'quote',
+          location: 'aurelius-5.json'
+        },
+        {
+          type: 'quote',
+          location: 'aurelius-6.json'
+        },
+        {
+          type: 'quote',
+          location: 'aurelius-7.json'
+        },
+        {
+          type: 'quote',
+          location: 'bruce-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'bruce-2.json'
+        },
+        {
+          type: 'quote',
+          location: 'bruce-3.json'
+        },
+        {
+          type: 'quote',
+          location: 'emerson-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'emerson-2.json'
+        },
+        {
+          type: 'quote',
+          location: 'epictetus-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'epictetus-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'hofstadter-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'kahneman-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'kahneman-2.json'
+        },
+        {
+          type: 'quote',
+          location: 'niezsche-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'patton-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-2.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-3.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-4.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-5.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-6.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-7.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-8.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-9.json'
+        },
+        {
+          type: 'quote',
+          location: 'suntzu-10.json'
+        },
+        {
+          type: 'quote',
+          location: 'thoreau-1.json'
+        },
+        {
+          type: 'quote',
+          location: 'thoreau-12.json'
+        },
+        {
+          type: 'media',
+          format: 'video',
+          location: 'cowboy.mp4'
+        }
+      ],
+
+      defaultData = {
+        content: "To accuse others for one\'s own misfortunes is a sign of want of education; to accuse oneself shows that one\'s education has begun; to accuse neither oneself nor others shows that one\'s education is complete.",
+        attribution: "Epicticus",
+        type: "quote"
+      },
+
+      handle = {
+        'quote': function (data) {
+          $('.content').append('<div class="title">'+data.content+'<div><br><div class="attribution">'+data.attribution+'</div>');
+        },
+        'media': function (data) {
+          var display = {
+            'video': function (src) {
+              return '<video autoplay="autoplay" loop><source src='+src+'><video>';
+            },
+            'image': function (src) {
+              return '<img src='+src+'><div>';
+            }
+          }
+          $('.content').append(display[data.format](contentUrl + data.location));
+        }
+      };
+
+  $(document).on('display', function (evt, data) {
+    handle[data.type](data);
+  });
+
+  var assetIndex = Math.floor(Math.random()*(library.length));
+
+  if (library[assetIndex].type == 'media') {
+    $(document).trigger('display', library[assetIndex]);
+  } else {
+    $.get(contentUrl + library[assetIndex].location).success(function (data) {
+      $(document).trigger('display', $.extend({'type': 'quote'}, JSON.parse(data)));
+    }).fail(function () {
+      $(document).trigger('display', $.extend({'type': 'quote'}, defaultData));
+    });
+  }
+</script>
+</body>
+</html>
