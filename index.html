@@ -5,13 +5,37 @@
   <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic' rel='stylesheet' type='text/css'>
   <style type="text/css">
     body { font-family: 'Lora', serif; background-image: url('http://www.decenttrades.com/assets/subtle_white_feathers.png'); background-repeat: 'repeat';}
+    .content div { float: left; }
     .title { font-size: 36px; }
     .attribution { font-style: italic; font-size: 24px; padding-left: 100px; }
-    .content { height: 100%; width: 80%; margin: 100px auto; }
+    .content { height: 100%; width: 80%; margin: 50px auto; }
+    .half { width: 45%; margin-left: 5%; min-height: 51%; }
+    .full { width: 100%; text-align: center; margin-bottom: 50px; }
+
+    .button {
+        padding: 0.5em 1em;
+        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-weight: bold;
+        color: rgba(0,0,0,0.25);
+        border: none rgba(0, 0, 0, 0); 
+        background-color: #E6E6E6;
+        text-decoration: none;
+        border-radius: 2px;
+    }
+    .button:hover { background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10)); }
+    .button:focus { outline: 0; }
+    .button:active {
+        box-shadow: 0 0 0 1px rgba(0,0,0, 0.15) inset, 0 0 6px rgba(0,0,0, 0.20) inset;
+        border-color: #000\9;
+    }
   </style>
 </head>
 <body>
-  <div class="content"></div>
+  <div class="content">
+    <div class="full"><a class="button" href='/'>ANOTHER ONE</a></div>
+    <div class="half quote"></div>
+    <div class="half gallery"></div>
+  </div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script>
   var contentUrl = 'http://www.decenttrades.com/assets/lottery/',
@@ -87,7 +111,7 @@
         },
         {
           type: 'quote',
-          location: 'niezsche-1.json'
+          location: 'nietzsche-1.json'
         },
         {
           type: 'quote',
@@ -140,11 +164,43 @@
         {
           type: 'quote',
           location: 'thoreau-12.json'
-        },
+        }
+      ],
+      memes = [
         {
           type: 'media',
           format: 'video',
           location: 'cowboy.mp4'
+        },
+        {
+          type: 'media',
+          format: 'image',
+          location: 'badtrades.png'
+        },
+        {
+          type: 'media',
+          format: 'image',
+          location: 'bear.gif'
+        },
+        {
+          type: 'media',
+          format: 'image',
+          location: 'kazoo.jpg'
+        },
+        {
+          type: 'media',
+          format: 'image',
+          location: 'mod.gif'
+        },
+        {
+          type: 'media',
+          format: 'image',
+          location: 'shirt.gif'
+        },
+        {
+          type: 'media',
+          format: 'image',
+          location: '6oE77yi.gif'
         }
       ],
 
@@ -156,7 +212,7 @@
 
       handle = {
         'quote': function (data) {
-          $('.content').append('<div class="title">'+data.content+'<div><br><div class="attribution">'+data.attribution+'</div>');
+          $('.quote').append('<div class="title">'+data.content+'<div><br><div class="attribution">'+data.attribution+'</div>');
         },
         'media': function (data) {
           var display = {
@@ -167,25 +223,34 @@
               return '<img src='+src+'><div>';
             }
           }
-          $('.content').append(display[data.format](contentUrl + data.location));
+          $('.gallery').append(display[data.format](contentUrl + data.location));
         }
-      };
+      },
+
+      quoteIndex = Math.floor(Math.random()*(library.length)),
+      memeIndex = Math.floor(Math.random()*(memes.length));
 
   $(document).on('display', function (evt, data) {
     handle[data.type](data);
   });
 
-  var assetIndex = Math.floor(Math.random()*(library.length));
+  $(document).trigger('display', memes[memeIndex]);
 
-  if (library[assetIndex].type == 'media') {
-    $(document).trigger('display', library[assetIndex]);
-  } else {
-    $.get(contentUrl + library[assetIndex].location).success(function (data) {
-      $(document).trigger('display', $.extend({'type': 'quote'}, JSON.parse(data)));
-    }).fail(function () {
-      $(document).trigger('display', $.extend({'type': 'quote'}, defaultData));
-    });
-  }
+  $.get(contentUrl + library[quoteIndex].location).success(function (data) {
+    $(document).trigger('display', $.extend({'type': 'quote'}, JSON.parse(data)));
+  }).fail(function () {
+    $(document).trigger('display', $.extend({'type': 'quote'}, defaultData));
+  });
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73580103-1', 'auto');
+  ga('send', 'pageview');
+
 </script>
 </body>
 </html>
