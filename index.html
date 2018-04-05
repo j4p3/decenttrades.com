@@ -70,7 +70,6 @@
 
   const render = {
     'quote': (data) => {
-      console.log('rendering quote')
       $('.quote').html('<div class="title">'+data.content+'<div><br><div class="attribution">'+data.attribution+'</div>');
     },
     'meme': (data) => {
@@ -89,16 +88,13 @@
     const [format, filename] = randomMeme();
     render['meme']({ format: format, filename: filename})
 
-    console.log('fetching quote')
     $.get(`assets/quote/${randomQuoteIndex()}.json`).success((data) => {
-      console.log('got quote');
       render['quote'](data);
     }).fail(() => render['quote'](defaultQuote))
   };
 
   $('#trigger').on('click', function(evt) {
     evt.preventDefault();
-    console.log('heard trigger')
     reset();
   });
 
