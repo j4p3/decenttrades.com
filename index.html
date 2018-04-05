@@ -9,18 +9,19 @@
     .title { font-size: 36px; }
     .attribution { font-style: italic; font-size: 24px; padding-left: 100px; }
     .content { height: 100%; width: 80%; margin: 50px auto; }
-    .half { width: 45%; margin-left: 5%; min-height: 51%; }
-    .full { width: 100%; text-align: center; margin-bottom: 50px; }
+    .half { float: left; width: 45%; margin-left: 5%; min-height: 51%; }
+    .full { float: left; width: 100%; text-align: center; margin-bottom: 50px; }
+    .meme { max-width: 600px; }
 
     .button {
         padding: 0.5em 1em;
         font-family: 'Helvetica', 'Arial', sans-serif;
+        font-size: 26pt;
         font-weight: bold;
-        color: rgba(0,0,0,0.25);
-        border: none rgba(0, 0, 0, 0); 
-        background-color: #E6E6E6;
+        color: #fff;
+        background-color: rgba(0,0,0, 0.25);
         text-decoration: none;
-        border-radius: 2px;
+        border-radius: 6px;
     }
     .button:hover { background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10)); }
     .button:focus { outline: 0; }
@@ -28,219 +29,80 @@
         box-shadow: 0 0 0 1px rgba(0,0,0, 0.15) inset, 0 0 6px rgba(0,0,0, 0.20) inset;
         border-color: #000\9;
     }
+
+    @media screen and (max-width: 800px) {
+      .meme {
+        max-width: 400px;
+      }
+      .half {
+        width: 100%;
+        margin: none;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="content">
-    <div class="full"><a class="button" href='/'>ANOTHER ONE</a></div>
+    <div class="full"><a id="trigger" class="button" href='#'>another one</a></div>
     <div class="half quote"></div>
     <div class="half gallery"></div>
   </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script>
-  var contentUri = 'assets/lottery/',
+  const libraryLength = 56;
+  const memes = {
+    img: ['0.gif','1.png','10.gif','11.jpg','12.jpg','13.jpg','14.jpg','15.jpg','16.jpg','2.jpg','3.jpg','4.jpg','5.gif','6.jpg','7.jpg','8.gif','9.gif'],
+    vid: ['0.mp4','1.webm','2.webm','3.webm','4.mp4','5.webm','6.mp4']
+  };
 
-      library = [
-        {
-          type: 'quote',
-          location: 'aurelius-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'aurelius-2.json'
-        },
-        {
-          type: 'quote',
-          location: 'aurelius-3.json'
-        },
-        {
-          type: 'quote',
-          location: 'aurelius-4.json'
-        },
-        {
-          type: 'quote',
-          location: 'aurelius-5.json'
-        },
-        {
-          type: 'quote',
-          location: 'aurelius-6.json'
-        },
-        {
-          type: 'quote',
-          location: 'aurelius-7.json'
-        },
-        {
-          type: 'quote',
-          location: 'bruce-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'bruce-2.json'
-        },
-        {
-          type: 'quote',
-          location: 'bruce-3.json'
-        },
-        {
-          type: 'quote',
-          location: 'emerson-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'emerson-2.json'
-        },
-        {
-          type: 'quote',
-          location: 'epictetus-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'epictetus-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'hofstadter-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'kahneman-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'kahneman-2.json'
-        },
-        {
-          type: 'quote',
-          location: 'nietzsche-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'patton-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-2.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-3.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-4.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-5.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-6.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-7.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-8.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-9.json'
-        },
-        {
-          type: 'quote',
-          location: 'suntzu-10.json'
-        },
-        {
-          type: 'quote',
-          location: 'thoreau-1.json'
-        },
-        {
-          type: 'quote',
-          location: 'thoreau-12.json'
-        }
-      ],
-      memes = [
-        {
-          type: 'media',
-          format: 'video',
-          location: 'cowboy.mp4'
-        },
-        {
-          type: 'media',
-          format: 'image',
-          location: 'badtrades.png'
-        },
-        {
-          type: 'media',
-          format: 'image',
-          location: 'bear.gif'
-        },
-        {
-          type: 'media',
-          format: 'image',
-          location: 'kazoo.jpg'
-        },
-        {
-          type: 'media',
-          format: 'image',
-          location: 'mod.gif'
-        },
-        {
-          type: 'media',
-          format: 'image',
-          location: 'shirt.gif'
-        },
-        {
-          type: 'media',
-          format: 'image',
-          location: '6oE77yi.gif'
-        }
-      ],
+  const defaultQuote = {
+    content: "To accuse others for one\'s own misfortunes is a sign of want of education; to accuse oneself shows that one\'s education has begun; to accuse neither oneself nor others shows that one\'s education is complete.",
+    attribution: "Epicticus",
+    type: "quote"
+  };
 
-      defaultData = {
-        content: "To accuse others for one\'s own misfortunes is a sign of want of education; to accuse oneself shows that one\'s education has begun; to accuse neither oneself nor others shows that one\'s education is complete.",
-        attribution: "Epicticus",
-        type: "quote"
-      },
+  const randomQuoteIndex = () => Math.floor(Math.random()*(libraryLength));
+  const randomMeme = () => {
+    const format = Math.floor(Math.random()*2) > 1 ? 'vid' : 'img'
+    const meme = memes[format][Math.floor(Math.random()*(memes[format].length))];
+    return [format, meme];
+  };
 
-      handle = {
-        'quote': function (data) {
-          $('.quote').append('<div class="title">'+data.content+'<div><br><div class="attribution">'+data.attribution+'</div>');
+  const render = {
+    'quote': (data) => {
+      console.log('rendering quote')
+      $('.quote').html('<div class="title">'+data.content+'<div><br><div class="attribution">'+data.attribution+'</div>');
+    },
+    'meme': (data) => {
+      const template = {
+        'vid': (src) =>  {
+          return `<video  class="meme" autoplay="autoplay" loop><source src='${src}'></video>`;
         },
-        'media': function (data) {
-          var display = {
-            'video': function (src) {
-              return '<video autoplay="autoplay" loop><source src='+src+'><video>';
-            },
-            'image': function (src) {
-              return '<img src='+src+'><div>';
-            }
-          }
-          $('.gallery').append(display[data.format](contentUri + data.location));
-        }
-      },
+        'img': (src) => `<img class="meme" src='${src}'><div>`
+      }
+      $('.gallery').html(template[data.format](`assets/meme/${data.format}/${data.filename}`));
+    }
+  };
 
-      quoteIndex = Math.floor(Math.random()*(library.length)),
-      memeIndex = Math.floor(Math.random()*(memes.length));
 
-  $(document).on('display', function (evt, data) {
-    handle[data.type](data);
+  function reset() {
+    const [format, filename] = randomMeme();
+    render['meme']({ format: format, filename: filename})
+
+    console.log('fetching quote')
+    $.get(`assets/quote/${randomQuoteIndex()}.json`).success((data) => {
+      console.log('got quote');
+      render['quote'](data);
+    }).fail(() => render['quote'](defaultQuote))
+  };
+
+  $('#trigger').on('click', function(evt) {
+    evt.preventDefault();
+    console.log('heard trigger')
+    reset();
   });
 
-  $(document).trigger('display', memes[memeIndex]);
-
-  $.get(contentUri + library[quoteIndex].location).success(function (data) {
-    $(document).trigger('display', $.extend({'type': 'quote'}, JSON.parse(data)));
-  }).fail(function () {
-    $(document).trigger('display', $.extend({'type': 'quote'}, defaultData));
-  });
+  reset();
 </script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
